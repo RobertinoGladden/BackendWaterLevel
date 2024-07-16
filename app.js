@@ -1,5 +1,7 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
 
 // Middleware to parse JSON bodies
@@ -23,11 +25,22 @@ app.post('/update', (req, res) => {
 
 // Endpoint to get the latest water level data
 app.get('/latest', (req, res) => {
-  res.json({ waterLevel: latestWaterLevel });
+  res.json({
+    id: 1,
+    location: {
+      province: 'Banten',
+      city: 'Serang',
+      subdistrict: 'Pipitan',
+      village: 'Walantaka'
+    },
+    waterLevel: latestWaterLevel
+  });
 });
 
-// Serve the static HTML file
-app.use(express.static('public'));
+// Serve the HTML page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
