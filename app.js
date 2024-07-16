@@ -1,17 +1,19 @@
-
-const express = require('express');
+const express = require("express");
+const cors = require("cors");
 const bodyParser = require('body-parser');
 const path = require('path');
-const app = express();
 
-// Middleware to parse JSON bodies
-app.use(bodyParser.json());
+const app = express();
+const port = process.env.PORT || 3000; // Memperbarui agar port dapat disesuaikan oleh Vercel
+
+app.use(cors());
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Store the latest water level data
+// Simpan data level air terbaru
 let latestWaterLevel = 0;
 
-// Endpoint to receive data from the Arduino
+// Endpoint untuk menerima data dari Arduino
 app.post('/update', (req, res) => {
   const value = req.body.value;
   if (value !== undefined) {
@@ -23,19 +25,18 @@ app.post('/update', (req, res) => {
   }
 });
 
-// Endpoint to get the latest water level data
+// Endpoint untuk mendapatkan data level air terbaru
 app.get('/latest', (req, res) => {
   res.json({
     waterLevel: latestWaterLevel
   });
 });
 
-// Serve the HTML page
+// Endpoint untuk menampilkan halaman HTML
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
