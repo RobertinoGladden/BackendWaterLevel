@@ -26,13 +26,6 @@ app.post('/update', (req, res) => {
 // Endpoint to get the latest water level data
 app.get('/latest', (req, res) => {
   res.json({
-    id: 1,
-    location: {
-      province: 'Banten',
-      city: 'Serang',
-      subdistrict: 'Pipitan',
-      village: 'Walantaka'
-    },
     waterLevel: latestWaterLevel
   });
 });
